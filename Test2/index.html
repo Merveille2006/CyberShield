@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Sécurité Citoyenne</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo" onclick="showView('page-accueil')"> CyberShield</div>
+        <nav class="nav-links">
+            <a href="#" onclick="showView('page-accueil')">Accueil</a>
+            <a href="#" onclick="showView('page-accueil')">À propos</a>
+            <button class="nav-btn-track" onclick="showView('page-suivi')">Suivre mon affaire</button>
+            <button class="nav-btn-login" onclick="showView('page-connexion')">Espace Agent</button>
+        </nav>
+    </header>
+
+    <section id="page-accueil" class="view active">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Ensemble contre la Cybercriminalité Locale</h1>
+                <p>Déposez vos preuves en toute sécurité et suivez l'avancement des enquêtes menées par nos brigades spécialisées.</p>
+                <button class="btn-primary" onclick="showView('page-signalement')">Signaler une arnaque</button>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2 class="section-title">Pourquoi signaler votre situation ?</h2>
+            <div class="grid-three">
+                <div class="info-card">
+                    <img src="anonyme.jpg" alt="Anonymat garanti">
+                    <div class="info-text">
+                        <h3>Anonymat Garanti</h3>
+                        <p>Déposez vos plaintes sans aucune crainte. Vos informations personnelles et votre identité restent totalement protégées.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <img src="https://via.placeholder.com/100" alt="Action rapide">
+                    <div class="info-text">
+                        <h3>Action Immédiate</h3>
+                        <p>Dès la réception de vos éléments, nos experts analysent les liens et numéros pour neutraliser les escrocs locaux.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <img src="https://via.placeholder.com/100" alt="Indemnisation">
+                    <div class="info-text">
+                        <h3>Suivi & Indemnisation</h3>
+                        <p>Une fois l'enquête clôturée par la justice, utilisez votre code unique pour demander le gel de vos fonds perdus.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cells-section">
+            <h2 class="section-title">Nos Cellules Spécialisées</h2>
+            <div class="grid-three">
+                <div class="cell-card">
+                    <h3> Cellule Fraude Mobile</h3>
+                    <p>Spécialisée dans les arnaques de dépôts de fonds, faux frais de transfert et usurpations par Mobile Money.</p>
+                </div>
+                <div class="cell-card">
+                    <h3> Cellule Phishing</h3>
+                    <p>Traque et bloque les faux liens WhatsApp, SMS frauduleux et copies de sites bancaires.</p>
+                </div>
+                <div class="cell-card">
+                    <h3> Brouteurs & Chantage</h3>
+                    <p>Intervient d'urgence sur les faux profils de réseaux sociaux et les chantages à la fausse identité.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <p>&copy; 2026 CyberShield - Brigade Centrale de Lutte contre la Cybercriminalité. Tous droits réservés.</p>
+        </footer>
+    </section>
+
+
+    <section id="page-signalement" class="view">
+        <div class="form-container">
+            <h2>Faire un signalement sécurisé</h2>
+            <p class="form-subtitle">Remplissez les détails connus sur l'escroc. L'analyse commencera immédiatement.</p>
+            
+            <div id="alert-succes" class="alert-box hidden">
+                <p> Signalement enregistré ! Voici votre code de suivi unique : <strong id="code-genere"></strong></p>
+            </div>
+
+            <form id="form-plainte">
+                <label>Date du constat ou de l'arnaque :</label>
+                <input type="date" id="sig-date" required>
+
+                <label>Type d'arnaque :</label>
+                <select id="sig-type" required>
+                    <option value="Phishing">Phishing (Faux liens, e-mails suspects)</option>
+                    <option value="Fraude financière">Fraude financière (Faux dépôts de fonds)</option>
+                    <option value="Usurpation d'identité">Usurpation d'identité (Faux profil)</option>
+                </select>
+
+                <label>Votre Quartier :</label>
+                <select id="sig-quartier" required>
+                    <option value="Tié-Tié">Tié-Tié</option>
+                    <option value="Mpaka">Mpaka</option>
+                    <option value="Lumumba">Lumumba</option>
+                    <option value="Centre-ville">Centre-ville</option>
+                </select>
+
+                <label>Élément clé de l'escroc (Lien suspect ou Numéro de téléphone) :</label>
+                <input type="text" id="sig-element" placeholder="Ex: https://lien-bizarre.com ou +242 06..." required>
+
+                <label>Description détaillée des faits :</label>
+                <textarea id="sig-description" placeholder="Expliquez comment l'arnaque s'est passée..." required></textarea>
+
+                <label>Preuves numériques (Fichiers/Captures) :</label>
+                <input type="file" id="sig-fichier" accept="image/*">
+
+                <button type="submit" class="btn-submit">Valider mon dépôt de preuve</button>
+            </form>
+        </div>
+    </section>
+
+
+    <section id="page-suivi" class="view">
+        <div class="suivi-container">
+            <h2>Suivre l'avancement d'une affaire</h2>
+            <p>Entrez votre code reçu lors du dépôt pour connaître le statut de l'enquête.</p>
+            
+            <div class="search-box-suivi">
+                <input type="text" id="input-suivi-code" placeholder="Ex: CS-9843">
+                <button class="btn-primary" onclick="verifierStatutAffaire()">Rechercher</button>
+            </div>
+
+            <div id="resultat-suivi" class="resultat-box hidden">
+                <h3>Statut de l'affaire : <span id="statut-badge-text"></span></h3>
+                <p id="statut-description-text"></p>
+
+                <div id="zone-indemnisation" class="indemnisation-box hidden">
+                    <h4> Demande d'indemnisation disponible</h4>
+                    <p>Cette affaire est résolue ou transmise. Pour lancer le processus de dédommagement, complétez vos coordonnées :</p>
+                    <input type="text" id="indem-contact" placeholder="Entrez votre Numéro de téléphone ou Adresse e-mail">
+                    <button class="btn-submit" onclick="demanderIndemnisation()">Soumettre ma demande d'indemnisation</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="page-connexion" class="view">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <div class="space-logo">SPACE</div>
+                <div class="welcome-text">Welcome Back</div>
+                
+                <form id="form-connexion">
+                    <div class="input-group">
+                        <label>Nom complet de l'enquêteur</label>
+                        <input type="text" id="agent-nom" value="Brigadier Oko" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email address</label>
+                        <input type="email" id="agent-email" value="oko@cybershield.cg" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="agent-pass" value="12345" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Matricule de l'enquêteur</label>
+                        <input type="text" id="agent-matricule" value="MAT-2026-X" required placeholder="Ex: MAT-XXXX-X">
+                    </div>
+                    
+                    <a href="#" class="forgot-link">Forget Password ?</a>
+                    <button type="submit" class="btn-login">Login</button>
+                </form>
+                <div class="signup-text">Are You New Member ? <a href="#">Sign UP</a></div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="page-dashboard" class="view">
+        <div class="dashboard-wrapper">
+            <aside class="sidebar">
+                <h3> Cellules d'Enquête</h3>
+                <ul class="workspace-filters">
+                    <li class="active-filter" onclick="filtrerWorkspace('Tous')">🌍 Hôtel Central (Global)</li>
+                    <li onclick="filtrerWorkspace('Fraude mobile')"> Cellule Fraude Mobile</li>
+                    <li onclick="filtrerWorkspace('Phishing')"> Cellule Phishing</li>
+                    <li onclick="filtrerWorkspace('Brouteurs')"> Brouteurs et Chantage</li>
+                </ul>
+                <button class="btn-logout" onclick="showView('page-accueil')">Quitter le Workspace</button>
+            </aside>
+
+            <main class="dashboard-content">
+                <h2>Workspace Interne - Liste des Signalements</h2>
+                
+                <div class="search-bar-container">
+                    <input type="text" id="search-correl" placeholder="🔍 Rechercher un numéro ou lien pour lier plusieurs victimes à un même escroc..." oninput="rechercherCorrelation()">
+                </div>
+
+                <div class="cards-grid" id="container-signalements">
+                    </div>
+            </main>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

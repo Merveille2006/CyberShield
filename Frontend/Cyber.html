@@ -1,0 +1,62 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield</title>
+    <link rel="stylesheet" href="Cyber.css">
+    <link rel="stylesheet" href="Cyber.js">
+</head>
+<body>
+    <nav class="en-tete">
+        <span class="logo-text">CyberShield</span>
+        <div>
+            <button>Portail public</button>
+            <button>Worksapace</button>
+        </div>
+    </nav>
+
+    <section id="portail publuc">
+        <div class="container">
+                    <h2>The Future of Artificial Intelligence in Cybersecurity</h2>
+                    <p class="subtitle">Signalez une cyber-escroquerie en toute sécurité. Protégez votre entourage.</p>
+                    
+                    <div class="form-box">
+                        <h3>Déposer un signalement (Anonyme ou Nominatif)</h3>
+                        <form id="report-form">
+                            <label for="report-desc">Description des faits</label>
+                            <textarea id="report-desc" placeholder="Expliquez en détail l'escroquerie..." required></textarea>
+
+                            <label for="report-neighborhood">Votre Quartier</label>
+                            <select id="report-neighborhood" required>
+                                <option value="">Sélectionnez votre quartier...</option>
+                                <option value="Centre-ville">Centre-ville</option>
+                                <option value="Grand Marché">Grand Marché</option>
+                                <option value="Tié-Tié">Tié-Tié</option>
+                                <option value="Mpaka">Mpaka</option>
+                            </select>
+
+                            <label for="report-evidence">Élément clé (Lien suspect ou Numéro de l'escroc)</label>
+                            <input type="text" id="report-evidence" placeholder="Ex: +242 06 XXX XX XX ou https://faux-site.com" required>
+
+                            <label>Preuves numériques (Captures d'écran)</label>
+                            <div class="drag-drop-zone" id="drop-zone">
+                                <p>Glissez-déposez vos captures d'écran ici ou <span>cliquez pour parcourir</span></p>
+                                <input type="file" id="file-input" accept="image/*" multiple hidden>
+                            </div>
+                            <div id="file-preview" class="file-preview"></div>
+
+                            <button type="submit" class="btn-submit">Valider le signalement</button>
+                        </form>
+
+                        <div id="success-message" class="success-box hidden">
+                            <p>✅ Signalement enregistré avec succès !</p>
+                            <p>Voici votre code de suivi anonyme : <strong id="tracking-code"></strong></p>
+                            <p class="note">Conservez-le précieusement pour suivre l'avancement.</p>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+    </section>
+</body>
+</html>

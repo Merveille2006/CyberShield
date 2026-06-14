@@ -1,0 +1,460 @@
+/* Variables de couleurs inspirées de connexion.jpg + ajouts épurés blancs */
+:root {
+    --bg-dark: #061518;
+    --teal-dark: #0b2b30;
+    --teal-glow: #0d3a40;
+    --cyan-accent: #1ba2c4;
+    --cyan-bright: #2fe0f7;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --text-white: #ffffff;
+    --text-muted: #a0c0c5;
+    --pure-white: #ffffff;
+    --card-urgent: #7a1d1d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    overflow-x: hidden;
+}
+
+/* Navigation Globale de Test */
+.global-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(11, 43, 48, 0.8);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--cyan-bright);
+}
+
+.global-nav button {
+    background: transparent;
+    border: 1px solid var(--text-white);
+    color: var(--text-white);
+    padding: 8px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.global-nav button.btn-accent {
+    background: var(--cyan-accent);
+    border-color: var(--cyan-accent);
+}
+
+.global-nav button:hover {
+    background: var(--cyan-bright);
+    color: var(--bg-dark);
+}
+
+/* Gestion des Vues (Génération de SPA simple) */
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+}
+
+/* ========================================== */
+/* Style Portail Public (Arrière-plan image.jpg) */
+/* ========================================== */
+.hero-bg {
+    /* Remplacer par l'image de la victime si disponible localement */
+    background: url('image.jpg') no-repeat center center/cover;
+    min-height: calc(100vh - 70px);
+}
+
+.hero-overlay {
+    background: linear-gradient(135deg, rgba(6, 21, 24, 0.9) 30%, rgba(13, 58, 64, 0.8) 100%);
+    min-height: calc(100vh - 70px);
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 600px; /* Approche Mobile-First centrée */
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: var(--pure-white);
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+/* Box Formulaire avec effet Verre transparent et Blanc épuré */
+.form-box {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.form-box h3 {
+    margin-bottom: 20px;
+    color: var(--cyan-bright);
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+}
+
+form label {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 0.9rem;
+    color: var(--pure-white);
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.9); /* Fond clair pour une écriture très lisible */
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #333;
+    font-size: 1rem;
+    outline: none;
+}
+
+form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Zone Drag & Drop */
+.drag-drop-zone {
+    border: 2px dashed var(--cyan-accent);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    background: rgba(27, 162, 196, 0.05);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.drag-drop-zone:hover {
+    background: rgba(27, 162, 196, 0.15);
+}
+
+.drag-drop-zone span {
+    text-decoration: underline;
+    color: var(--cyan-bright);
+}
+
+.file-preview img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--cyan-accent);
+}
+
+.btn-submit {
+    width: 100%;
+    background: var(--cyan-accent);
+    color: var(--pure-white);
+    border: none;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: var(--cyan-bright);
+    color: var(--bg-dark);
+}
+
+.success-box {
+    margin-top: 20px;
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid #2ecc71;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.hidden { display: none !important; }
+
+/* ========================================== */
+/* Style Page de Connexion (Fidèle à connexion.jpg) */
+/* ========================================== */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px);
+    background: radial-gradient(circle at center, var(--teal-glow) 0%, var(--bg-dark) 100%);
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.space-logo {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 6px;
+    margin-bottom: 20px;
+    color: var(--pure-white);
+}
+
+.welcome-text {
+    font-size: 1.5rem;
+    color: var(--pure-white);
+    margin-bottom: 30px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--cyan-accent);
+    border-radius: 25px;
+    color: var(--pure-white);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.forgot-link {
+    display: block;
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-bottom: 25px;
+}
+
+.btn-login {
+    width: 100%;
+    background: linear-gradient(90deg, var(--cyan-accent), #0f7a94);
+    color: var(--pure-white);
+    border: none;
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.signup-text {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.signup-text a { color: var(--pure-white); font-weight: bold; text-decoration: none;}
+
+/* ========================================== */
+/* Style Espace Enquêteur Dashboard           */
+/* ========================================== */
+.dashboard-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--teal-glow);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.btn-logout {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-section {
+    background: var(--teal-dark);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.search-section input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--cyan-accent);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    color: #333;
+    margin-top: 10px;
+}
+
+.dashboard-content h3 {
+    margin-bottom: 15px;
+    color: var(--cyan-bright);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Carte Dossier Dynamique */
+.case-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+}
+
+.case-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cyan-bright);
+}
+
+.case-card.urgent {
+    border-left: 5px solid #e74c3c;
+    background: rgba(231, 76, 60, 0.05);
+}
+
+.case-card-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.case-card h4 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.evidence-badge {
+    display: inline-block;
+    background: rgba(27, 162, 196, 0.2);
+    color: var(--cyan-bright);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.btn-flag {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.case-card.urgent .btn-flag {
+    color: #e74c3c;
+}
+
+/* Fenêtre Modal (Visualiseur) */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.modal-content {
+    background: var(--teal-dark);
+    border: 2px solid var(--cyan-accent);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.modal-desc-text {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.btn-copy {
+    background: var(--cyan-accent);
+    border: none; color: white; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-left: 10px;
+}
+
+.modal-images img {
+    width: 80px; height: 80px; object-fit: cover; margin-right: 10px; margin-top: 10px; border-radius: 5px;
+}
