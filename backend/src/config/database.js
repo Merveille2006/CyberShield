@@ -11,9 +11,9 @@ const pool = new Pool({
 
 pool.connect((err, client, release) => {
   if (err) {
-    console.error('❌ Erreur connexion PostgreSQL :', err.message);
+    console.error('Erreur connexion PostgreSQL :', err.message);
   } else {
-    console.log('✅ Connecté à PostgreSQL — base cybershield');
+    console.log('Connecté à PostgreSQL — base cybershield');
     release();
   }
 });

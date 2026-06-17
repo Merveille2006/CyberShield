@@ -1,6 +1,6 @@
 const pool = require('../config/database');
 
-// GET /api/dashboard/stats
+
 const getStats = async (req, res) => {
   try {
     const [signalements, suspects, preuves, parStatut, parType, parQuartier] = await Promise.all([

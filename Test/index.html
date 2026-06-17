@@ -5,144 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberShield - Plateforme Anti-Cybercriminalité</title>
     <link rel="stylesheet" href="style.css">
-    
 </head>
 <body>
 
-    <nav class="global-nav">
-        <span class="logo-text">CyberShield</span>
-        <div>
-            <button onclick="switchView('public-portal')">Portail Public</button>
-            <button onclick="switchView('login-page')" class="btn-accent">Espace Brigade</button>
+    <header class="entete-principale">
+        <div class="conteneur">
+            <h1>🛡️ CyberShield</h1>
+            <p>Plateforme Locale de Signalement et de Dépôt de Preuves Numériques</p>
+            <nav class="navigation-mode">
+                <button id="bouton-mode-public" class="actif">Portail Public (Victime)</button>
+                <button id="bouton-mode-interne">Espace Enquêteurs (Brigade)</button>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <section id="public-portal" class="view active">
-        <div class="hero-bg">
-            <div class="hero-overlay">
-                <div class="container">
-                    <h2>The Future of Artificial Intelligence in Cybersecurity</h2>
-                    <p class="subtitle">Signalez une cyber-escroquerie en toute sécurité. Protégez votre entourage.</p>
-                    
-                    <div class="form-box">
-                        <h3>Déposer un signalement (Anonyme ou Nominatif)</h3>
-                        <form id="report-form">
-                            <label for="report-desc">Description des faits</label>
-                            <textarea id="report-desc" placeholder="Expliquez en détail l'escroquerie..." required></textarea>
-
-                            <label for="report-neighborhood">Votre Quartier</label>
-                            <select id="report-neighborhood" required>
-                                <option value="">Sélectionnez votre quartier...</option>
-                                <option value="Centre-ville">Centre-ville</option>
-                                <option value="Grand Marché">Grand Marché</option>
-                                <option value="Tié-Tié">Tié-Tié</option>
-                                <option value="Mpaka">Mpaka</option>
-                            </select>
-
-                            <label for="report-evidence">Élément clé (Lien suspect ou Numéro de l'escroc)</label>
-                            <input type="text" id="report-evidence" placeholder="Ex: +242 06 XXX XX XX ou https://faux-site.com" required>
-
-                            <label>Preuves numériques (Captures d'écran)</label>
-                            <div class="drag-drop-zone" id="drop-zone">
-                                <p>Glissez-déposez vos captures d'écran ici ou <span>cliquez pour parcourir</span></p>
-                                <input type="file" id="file-input" accept="image/*" multiple hidden>
-                            </div>
-                            <div id="file-preview" class="file-preview"></div>
-
-                            <button type="submit" class="btn-submit">Valider le signalement</button>
-                        </form>
-
-                        <div id="success-message" class="success-box hidden">
-                            <p>✅ Signalement enregistré avec succès !</p>
-                            <p>Voici votre code de suivi anonyme : <strong id="tracking-code"></strong></p>
-                            <p class="note">Conservez-le précieusement pour suivre l'avancement.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="login-page" class="view">
-        <div class="login-wrapper">
-            <div class="login-card">
-                <div class="space-logo">SPACE</div>
-                <div class="welcome-text">Welcome Back</div>
+    <main class="conteneur">
+        
+        <section id="section-portail-public" class="zone-contenu">
+            <div class="carte">
+                <h2>Signaler une Cyber-Escroquerie</h2>
+                <p class="description-aide">Aidez la brigade à vous protéger. Votre signalement peut être anonyme ou nominatif.</p>
                 
-                <form id="login-form">
-                    <div class="input-group">
-                        <label>Email address</label>
-                        <input type="email" id="login-email" value="enqueteur@cybershield.cg" required>
+                <form id="formulaire-signalement">
+                    <div class="groupe-formulaire">
+                        <label for="type-arnaque">Type d'arnaque :</label>
+                        <select id="type-arnaque" required>
+                            <option value="">-- Choisir une catégorie --</option>
+                            <option value="Phishing">Phishing (Orange)</option>
+                            <option value="Fraude Financière">Fraude Financière / Mobile Money (Rouge)</option>
+                            <option value="Usurpation d'identité">Usurpation d'identité (Gris)</option>
+                        </select>
                     </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" id="login-password" value="password123" required>
+
+                    <div class="groupe-formulaire">
+                        <label for="quartier-victime">Quartier (Pointe-Noire) :</label>
+                        <select id="quartier-victime" required>
+                            <option value="">-- Sélectionner votre quartier --</option>
+                            <option value="Tié-Tié">Tié-Tié</option>
+                            <option value="Mpaka">Mpaka</option>
+                            <option value="Lumumba">Lumumba</option>
+                            <option value="Grand Marché">Grand Marché</option>
+                            <option value="Ngoio">Ngoio</option>
+                        </select>
                     </div>
-                    
-                    <a href="#" class="forgot-link">Forget Password ?</a>
-                    
-                    <button type="submit" class="btn-login">Login</button>
+
+                    <div class="groupe-formulaire">
+                        <label for="description-faits">Description des faits :</label>
+                        <textarea id="description-faits" rows="4" placeholder="Expliquez comment l'arnaque s'est produite..." required></textarea>
+                    </div>
+
+                    <div class="groupe-formulaire">
+                        <label for="preuve-texte">Lien suspect, numéro de l'escroc ou email :</label>
+                        <input type="text" id="preuve-texte" placeholder="Ex: +242 06 XXX XX XX, ou http://faux-site.com" required>
+                    </div>
+
+                    <div class="groupe-formulaire">
+                        <label for="capture-preuve">Capture d'écran de preuve (JPEG, PNG uniquement) :</label>
+                        <input type="file" id="capture-preuve" accept=".jpg, .jpeg, .png" required>
+                        <small class="texte-info">Contrainte de sécurité : Seuls les formats images sont acceptés.</small>
+                    </div>
+
+                    <button type="submit" class="bouton-validation">Soumettre le signalement et générer mon code</button>
                 </form>
+
+                <div id="zone-code-suivi" class="succes-box masque">
+                    <h3>✅ Signalement enregistré !</h3>
+                    <p>Voici votre code de suivi anonyme à conserver précieusement :</p>
+                    <strong id="code-suivi-genere">CS-XXXX-XXXX</strong>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-espace-interne" class="zone-contenu masque">
+            
+            <div class="barre-outils-interne">
+                <div class="carte recherche-box">
+                    <h3>🔎 Moteur de Corrélation & Recherche Avancée</h3>
+                    <input type="text" id="champ-recherche" placeholder="Rechercher un numéro de suspect, un lien, un quartier...">
+                </div>
+            </div>
+
+            <div class="grille-dashboard">
                 
-                <div class="signup-text">Are You New Member ? <a href="#">Sign UP</a></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="dashboard-brigade" class="view">
-        <div class="dashboard-container">
-            <header class="dash-header">
-                <h2>Workspace Enquêteurs - Cellule Cybercriminalité</h2>
-                <button onclick="logout()" class="btn-logout">Déconnexion</button>
-            </header>
-
-            <div class="search-section">
-                <h3>Système de Recherche Avancé & Corrélation</h3>
-                <input type="text" id="search-bar" placeholder="🔍 Rechercher un numéro de téléphone ou un lien pour lier les victimes à un même escroc...">
-            </div>
-
-            <div class="dashboard-content">
-                <div class="dossiers-urgents-section">
-                    <h3>📌 Dossiers Urgents & Phénomènes Sériels (Épinglés)</h3>
-                    <div id="urgent-cards-container" class="cards-grid">
+                <div class="colonne-dossiers">
+                    <h2 class="titre-colonne urgent">🔥 Dossiers Urgents & Chauds (localStorage)</h2>
+                    <div id="liste-dossiers-urgents" class="conteneur-cartes-dossiers">
                         </div>
                 </div>
 
-                <div class="dossiers-generaux-section">
-                    <h3>📂 Tous les Signalements Récents</h3>
-                    <div id="all-cards-container" class="cards-grid">
+                <div class="colonne-dossiers">
+                    <h2 class="titre-colonne">📋 Flux Global des Signalements</h2>
+                    <div id="liste-flux-global" class="conteneur-cartes-dossiers">
                         </div>
                 </div>
-            </div>
-        </div>
 
-        <div id="proof-modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close-modal" onclick="closeModal()">&times;</span>
-                <h3 id="modal-title">Dossier #XXXX</h3>
-                <p><strong>Quartier :</strong> <span id="modal-quartier"></span></p>
-                <p><strong>Preuve textuelle :</strong> <span id="modal-evidence"></span> 
-                    <button onclick="copyEvidence()" class="btn-copy">Copier le lien/numéro en toute sécurité</button>
-                </p>
-                <p><strong>Description :</strong></p>
-                <p id="modal-desc" class="modal-desc-text"></p>
-                
-                <div class="modal-images">
-                    <h4>Preuves Numériques fournies :</h4>
-                    <div id="modal-images-container"></div>
-                </div>
-
-                <div class="modal-actions">
-                    <label for="modal-status">Changer le statut du dossier :</label>
-                    <select id="modal-status" onchange="updateCurrentCaseStatus()">
-                        <option value="Nouveau">Nouveau</option>
-                        <option value="En cours d'analyse">En cours d'analyse</option>
-                        <option value="Enquête clôturée">Enquête clôturée</option>
-                    </select>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+    </main>
 
     <script src="script.js"></script>
 </body>

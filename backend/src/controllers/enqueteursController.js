@@ -1,7 +1,7 @@
 const pool = require('../config/database');
 const bcrypt = require('bcrypt');
 
-// GET /api/enqueteurs
+
 const getAll = async (req, res) => {
   try {
     const result = await pool.query(
@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
   }
 };
 
-// GET /api/enqueteurs/:id
+
 const getById = async (req, res) => {
   try {
     const result = await pool.query(
@@ -38,7 +38,7 @@ const getById = async (req, res) => {
   }
 };
 
-// POST /api/enqueteurs
+
 const create = async (req, res) => {
   const { nom, email, mot_de_passe, matricule, id_roles, id_workspace } = req.body;
   if (!email || !mot_de_passe || !matricule) {
@@ -58,7 +58,7 @@ const create = async (req, res) => {
   }
 };
 
-// PATCH /api/enqueteurs/:id
+
 const update = async (req, res) => {
   const { nom, actif, id_roles, id_workspace } = req.body;
   try {
@@ -79,10 +79,9 @@ const update = async (req, res) => {
   }
 };
 
-// DELETE /api/enqueteurs/:id
+
 const remove = async (req, res) => {
   try {
-    // Désactivation plutôt que suppression (soft delete)
     const result = await pool.query(
       `UPDATE enqueteurs SET actif = false WHERE id_enqueteurs = $1 RETURNING id_enqueteurs`,
       [req.params.id]

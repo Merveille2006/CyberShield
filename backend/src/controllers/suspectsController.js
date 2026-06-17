@@ -1,6 +1,6 @@
 const pool = require('../config/database');
 
-// GET /api/suspects
+
 const getAll = async (req, res) => {
   try {
     const result = await pool.query(
@@ -16,7 +16,7 @@ const getAll = async (req, res) => {
   }
 };
 
-// GET /api/suspects/:id
+
 const getById = async (req, res) => {
   try {
     const suspect = await pool.query('SELECT * FROM suspects WHERE id_suspects = $1', [req.params.id]);
@@ -39,7 +39,7 @@ const getById = async (req, res) => {
   }
 };
 
-// POST /api/suspects
+
 const create = async (req, res) => {
   const { telephone, alias_suspects, email_suspects } = req.body;
   if (!telephone || !alias_suspects) {
@@ -57,7 +57,7 @@ const create = async (req, res) => {
   }
 };
 
-// POST /api/suspects/:id/lier-signalement
+
 const lierSignalement = async (req, res) => {
   const { id_signalement } = req.body;
   if (!id_signalement) return res.status(400).json({ success: false, message: 'id_signalement requis' });

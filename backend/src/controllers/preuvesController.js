@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Config multer
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = path.join(__dirname, '../../uploads/preuves');
@@ -27,7 +27,7 @@ const upload = multer({
   }
 });
 
-// GET /api/preuves?id_signalement=X
+
 const getAll = async (req, res) => {
   try {
     const { id_signalement } = req.query;
@@ -43,7 +43,7 @@ const getAll = async (req, res) => {
   }
 };
 
-// POST /api/preuves (avec fichier)
+
 const create = async (req, res) => {
   const { type_depreuve, plateforme, compte_mm, id_signalement, id_suspect } = req.body;
 
@@ -64,7 +64,7 @@ const create = async (req, res) => {
   }
 };
 
-// PATCH /api/preuves/:id/valider
+
 const valider = async (req, res) => {
   try {
     const result = await pool.query(

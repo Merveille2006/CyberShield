@@ -1,6 +1,6 @@
 const pool = require('../config/database');
 
-// GET /api/signalements
+
 const getAll = async (req, res) => {
   try {
     const { statut, priorite, page = 1, limit = 10 } = req.query;
@@ -40,7 +40,7 @@ const getAll = async (req, res) => {
   }
 };
 
-// GET /api/signalements/:id
+
 const getById = async (req, res) => {
   try {
     const result = await pool.query(
@@ -61,7 +61,7 @@ const getById = async (req, res) => {
   }
 };
 
-// GET /api/signalements/suivi/:code
+
 const getBySuivi = async (req, res) => {
   try {
     const result = await pool.query(
@@ -83,7 +83,7 @@ const getBySuivi = async (req, res) => {
   }
 };
 
-// POST /api/signalements
+
 const create = async (req, res) => {
   const { description, quartier, niveau_priorite, id_typearnaque, id_workspace } = req.body;
 
@@ -92,13 +92,12 @@ const create = async (req, res) => {
   }
 
   try {
-    // Générer code_suivi unique
     const prefix = quartier.substring(0, 2).toUpperCase();
     const countRes = await pool.query('SELECT COUNT(*) FROM signalements');
     const num = String(parseInt(countRes.rows[0].count) + 1).padStart(4, '0');
     const code_suivi = `SIG-${prefix}${num}`;
 
-    // Statut par défaut = SOUMIS
+    
     const statutRes = await pool.query("SELECT id_status FROM status WHERE code = 'SOUMIS'");
     const id_status = statutRes.rows[0]?.id_status || 1;
 
@@ -115,7 +114,7 @@ const create = async (req, res) => {
   }
 };
 
-// PATCH /api/signalements/:id/statut
+
 const updateStatut = async (req, res) => {
   const { id_status } = req.body;
   if (!id_status) return res.status(400).json({ success: false, message: 'id_status requis' });
@@ -133,7 +132,7 @@ const updateStatut = async (req, res) => {
   }
 };
 
-// DELETE /api/signalements/:id
+
 const remove = async (req, res) => {
   try {
     const result = await pool.query(
