@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Faire un signalement - CyberShield</title>
+  <link rel="stylesheet" href="test.css" />
+</head>
+<body class="page-interne">
+
+  <header id="en-tete">
+    <div class="contenu-en-tete">
+      <nav id="navigation-principale">
+        <a href="test.html" class="lien-nav">← Retour à l'accueil</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="conteneur-principal">
+    <section id="section-depot">
+      <div class="entete-section">
+        <h2 class="titre-section">Dépôt de Preuves</h2>
+        <p class="sous-titre-section">Remplissez ce formulaire pour transmettre les éléments à la brigade.</p>
+      </div>
+
+      <div class="conteneur-formulaire">
+        <form id="formulaire-plainte">
+          <div class="groupe-saisie">
+            <label>Type d'infraction :</label>
+            <select id="type-arnaque" required>
+              <option value="">Sélectionner...</option>
+              <option value="phishing">Phishing</option>
+              <option value="fraude-financiere">Fraude Financière</option>
+              <option value="usurpation-identite">Usurpation d'identité</option>
+              <option value="mobile-money">Mobile Money</option>
+            </select>
+          </div>
+          <div class="groupe-saisie">
+            <label>Quartier du délit :</label>
+            <input type="text" id="quartier" required placeholder="Ex: Lumumba, Tié-Tié...">
+          </div>
+          <div class="groupe-saisie">
+            <label>Description des faits :</label>
+            <textarea id="description" rows="4" required></textarea>
+          </div>
+          <div class="groupe-saisie">
+            <label>Indice ou Preuve :</label>
+            <input type="file" id="fichier-preuve" accept=".jpg, .jpeg, .png" required>
+          </div>
+          <button type="submit" class="btn-principal">Soumettre le signalement</button>
+        </form>
+        <div id="message-succes" class="cache">Dossier enregistré ! Voici votre code : <strong id="code-genere"></strong></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="test.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Déposer un Signalement</title>
+    <link rel="stylesheet" href="cyber.css">
+    <style>
+        .dropzone {
+            border: 2px dashed var(--border);
+            padding: 2rem;
+            text-align: center;
+            background: var(--background);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .dropzone:hover {
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="cyber.html" class="logo">Cyber<span>Shield</span></a>
+        <nav>
+            <a href="cyber.html">Accueil</a>
+            <a href="signalement.html" class="active">Signaler une fraude</a>
+            <a href="suivi.html">Suivre un dossier</a>
+            <a href="connexion.html">Espace Brigade</a>
+        </nav>
+    </header>
+
+    <div class="container" style="max-width: 650px;">
+        <div class="card">
+            <h2>Formulaire de Dépôt de Plainte / Preuve</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Votre signalement peut être anonyme. Remplissez un maximum de preuves numériques.</p>
+            
+            <form id="form-signalement">
+                <div class="form-group">
+                    <label for="select-type">Type d'arnaque *</label>
+                    <select id="select-type" required>
+                        <option value="1">Phishing (Faux site, mail suspect)</option>
+                        <option value="2">Fraude Financière (Mobile Money, Faux gains)</option>
+                        <option value="3">Usurpation d'identité / Réseaux Sociaux</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-quartier">Quartier (Localisation) *</label>
+                    <input type="text" id="input-quartier" placeholder="Ex: Tié-Tié, Grand Marché..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="select-priorite">Niveau d'urgence estimé</label>
+                    <select id="select-priorite">
+                        <option value="FAIBLE">Faible</option>
+                        <option value="MOYEN" selected>Moyen</option>
+                        <option value="ELEVE">Élevé (Propagation rapide / Gros préjudice)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-description">Description détaillée des faits *</label>
+                    <textarea id="input-description" rows="4" placeholder="Expliquez comment l'escroquerie s'est déroulée..." required></textarea>
+                </div>
+
+                <fieldset style="border: 1px solid var(--border); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                    <legend style="padding: 0 0.5rem; font-weight: bold; color: var(--accent);">Éléments de preuve clés</legend>
+                    <div class="form-group">
+                        <label for="proof-phone">Numéro de téléphone de l'escroc (optionnel)</label>
+                        <input type="text" id="proof-phone" placeholder="Ex: +242 06 XXX XX XX">
+                    </div>
+                    <div class="form-group">
+                        <label for="proof-url">Lien internet ou URL suspecte (optionnel)</label>
+                        <input type="url" id="proof-url" placeholder="Ex: https://faux-site-crypto.com">
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <label>Captures d'écran ou Preuves Numériques</label>
+                    <div class="dropzone" id="dropzone">
+                        Glissez-déposez vos captures d'écran ici ou cliquez pour parcourir
+                        <input type="file" id="file-input" style="display: none;" multiple>
+                    </div>
+                    <div id="file-list" style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--success);"></div>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">Soumettre le Signalement</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+
+        
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+        
+        dropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => {
+            if(fileInput.files.length > 0) {
+                fileList.textContent = `${fileInput.files.length} fichier(s) sélectionné(s) prêt(s) au dépôt.`;
+            }
+        });
+
+        document.getElementById('form-signalement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            
+            let fullDescription = document.getElementById('input-description').value;
+            const phone = document.getElementById('proof-phone').value;
+            const url = document.getElementById('proof-url').value;
+
+            if(phone) fullDescription += ` [TEL_ESCROC: ${phone}]`;
+            if(url) fullDescription += ` [URL_SUSPECTE: ${url}]`;
+
+            const payload = {
+                description: fullDescription,
+                quartier: document.getElementById('input-quartier').value,
+                niveau_priorite: document.getElementById('select-priorite').value,
+                id_typearnaque: parseInt(document.getElementById('select-type').value),
+                id_status: 1 
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/signalements`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                
+                const result = await response.json();
+                
+                
+                const codeGenere = result.code_suivi || `SIG-${Math.floor(1000 + Math.random() * 9000)}`;
+                
+                alert(`Signalement enregistré avec succès !\n\nCRUCIAL : Notez bien votre CODE DE SUIVI anonyme pour vérifier l'avancement : ${codeGenere}`);
+                document.getElementById('form-signalement').reset();
+                fileList.textContent = '';
+                window.location.href = 'suivi.html?code=' + codeGenere;
+            } catch (error) {
+                console.error(error);
+                alert("Erreur de liaison avec le serveur local. Assurez-vous que node server.js tourne sur le port 4000 !");
+            }
+        });
+    </script>
+</body>
+</html>

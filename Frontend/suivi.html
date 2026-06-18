@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Suivi de Dossier</title>
+    <link rel="stylesheet" href="cyber.css">
+</head>
+<body>
+    <header>
+        <a href="cyber.html" class="logo">Cyber<span>Shield</span></a>
+        <nav>
+            <a href="cyber.html">Accueil</a>
+            <a href="signalement.html">Signaler une fraude</a>
+            <a href="suivi.html" class="active">Suivre un dossier</a>
+            <a href="connexion.html">Espace Brigade</a>
+        </nav>
+    </header>
+
+    <div class="container" style="max-width: 600px;">
+        <div class="card">
+            <h2>Consulter l'avancement d'un dossier</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Saisissez le code alphanumérique qui vous a été communiqué lors du dépôt.</p>
+            
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem;">
+                <input type="text" id="input-code" placeholder="Ex: SIG-TT0001">
+                <button id="btn-recherche" class="btn">Rechercher</button>
+            </div>
+
+            <div id="status-container" style="display: none; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <h3>Dossier : <span id="txt-code" style="color: var(--accent);"></span></h3>
+                <div style="margin: 1rem 0; padding: 1rem; border-radius: 6px; font-weight: bold; text-align: center;" id="badge-status">
+                    Statut : En cours d'analyse
+                </div>
+                <p><strong>Quartier concerné :</strong> <span id="txt-quartier"></span></p>
+                <p style="margin-top: 0.5rem;"><strong>Description transmise :</strong></p>
+                <p id="txt-desc" style="background: var(--background); padding: 0.75rem; border-radius: 6px; font-size: 0.95rem; margin-top: 0.25rem; color: var(--primary-light);"></p>
+            </div>
+            <div id="error-container" style="display: none; color: var(--danger); font-weight: 500; text-align: center;">
+                Aucun dossier trouvé avec ce code de suivi. Vérifiez l'orthographe.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('code')) {
+            document.getElementById('input-code').value = urlParams.get('code');
+            executerRecherche(urlParams.get('code'));
+        }
+
+        document.getElementById('btn-recherche').addEventListener('click', () => {
+            const code = document.getElementById('input-code').value.trim();
+            if(code) executerRecherche(code);
+        });
+
+             async function executerRecherche() {
+    
+    const token = localStorage.getItem('token'); 
+
+    try {
+        const response = await fetch('http://localhost:4000/api/signalements', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` 
+            }
+        });
+
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert("Votre session a expiré ou vous n'êtes pas connecté.");
+                window.location.href = 'connexion.html'; 
+                return;
+            }
+            throw new Error(`Erreur serveur: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        
+        const signalements = Array.isArray(result) ? result : (result.data || []);
+
+        
+        const valeurRecherche = document.getElementById('search-input').value; 
+        const signalementTrouve = signalements.find(s => s.code_suivi === valeurRecherche || s.id === valeurRecherche);
+        
+        
+        renderSuivi(signalementTrouve);
+
+    } catch (error) {
+        console.error("Erreur dans executerRecherche:", error);
+    }
+}   
+    </script>
+</body>
+</html>

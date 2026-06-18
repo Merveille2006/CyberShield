@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Tableau de Bord d'Investigation</title>
+    <link rel="stylesheet" href="cyber.css">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        .search-bar {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .signalement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .sig-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .sig-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+        .sig-card.urgent {
+            border-left: 5px solid var(--danger);
+        }
+        .flag-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+        .visualizer {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            position: sticky;
+            top: 1rem;
+            height: fit-content;
+        }
+        @media (max-width: 900px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="dashboard.html" class="logo">Cyber<span>Shield</span> [Espace Interne]</a>
+        <div style="color: white; display: flex; align-items: center; gap: 1rem;">
+            <span>Officier : <strong id="lbl-user">...</strong> (<small id="lbl-role"></small>)</span>
+            <button id="btn-logout" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Déconnexion</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 style="margin-bottom: 0.5rem;">Tableau de bord d'Analyse des Preuves</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Recherchez des phénomènes sériels et marquez les réseaux d'escrocs d'un drapeau.</p>
+
+    
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Analyse croisée : saisissez un numéro de téléphone ou lien suspect pour lier les victimes...">
+            <button class="btn" id="btn-search">Scanner le Workspace</button>
+        </div>
+
+        <div class="dashboard-layout">
+            
+            <div>
+                <h3>Signalements Récents</h3>
+                <div class="signalement-list" id="container-list">
+            
+                </div>
+            </div>
+
+            
+            <div class="visualizer">
+                <h3>Visualiseur de Preuves</h3>
+                <hr style="border:0; border-top:1px solid var(--border); margin: 0.75rem 0;">
+                <div id="visualizer-placeholder" style="color: var(--text-muted); text-align: center; padding: 3rem 0;">
+                    Sélectionnez un dossier de signalement à gauche pour examiner les pièces à conviction en toute sécurité.
+                </div>
+                <div id="visualizer-content" style="display: none;">
+                    <p><strong>ID Interne :</strong> <span id="v-id"></span></p>
+                    <p><strong>Code Suivi :</strong> <span id="v-code" style="color: var(--accent); font-weight: bold;"></span></p>
+                    <p><strong>Quartier :</strong> <span id="v-quartier"></span></p>
+                    <p><strong>Priorité :</strong> <span id="v-priorite"></span></p>
+                    <br>
+                    <p><strong>Corps du signalement & indices :</strong></p>
+                    <div id="v-desc" style="background: var(--background); padding: 1rem; border-radius: 6px; font-size: 0.95rem; border: 1px solid var(--border); margin: 0.5rem 0; white-space: pre-wrap;"></div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <label for="v-select-status">Changer le statut de l'enquête :</label>
+                        <select id="v-select-status" style="margin-top: 0.25rem;">
+                            <option value="1">Nouveau / Non assigné</option>
+                            <option value="2">En cours d'analyse</option>
+                            <option value="3">Clôturé / Transmis à la justice</option>
+                        </select>
+                        <button class="btn" id="btn-save-status" style="margin-top: 0.5rem; width: 100%; padding: 0.5rem;">Mettre à jour le dossier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+        
+        
+        const token = localStorage.getItem('token_cybershield');
+        if (!token) {
+            alert("Accès refusé ! Vous devez vous connecter à votre Workspace de brigade.");
+            window.location.href = 'connexion.html';
+        }
+
+        document.getElementById('lbl-user').textContent = localStorage.getItem('user_name') || 'Enquêteur';
+        document.getElementById('lbl-role').textContent = localStorage.getItem('user_role') || 'SUPER_ADMIN';
+
+        let allSignalements = [];
+        let selectedSignalement = null;
+
+        
+        let urgentFlags = JSON.parse(localStorage.getItem('urgent_flags') || '[]');
+
+        async function fetchSignalements() {
+    try {
+        const response = await fetch(`${API_URL}/signalements`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const result = await response.json();
+        
+        
+        allSignalements = Array.isArray(result) ? result : (result.data || []);
+        
+        renderList(allSignalements);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des signalements:", error);
+    }
+}
+
+        function renderList(list) {
+            const container = document.getElementById('container-list');
+            container.innerHTML = '';
+
+            if(list.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted);">Aucun dossier ne correspond à ce critère.</p>';
+                return;
+            }
+
+            
+            const sortedList = [...list].sort((a, b) => {
+                const aUrgent = urgentFlags.includes(a.id_signalements);
+                const bUrgent = urgentFlags.includes(b.id_signalements);
+                return bUrgent - aUrgent;
+            });
+
+            sortedList.forEach(sig => {
+                const isUrgent = urgentFlags.includes(sig.id_signalements);
+                const card = document.createElement('div');
+                card.className = `sig-card ${isUrgent ? 'urgent' : ''}`;
+                card.onclick = () => selectDossier(sig);
+
+                
+                let statusStyle = 'background:#fee2e2; color:#ef4444;';
+                if(sig.id_status === 3 || sig.nom_status === 'CLOTURE') statusStyle = 'background:#d1fae5; color:#065f46;';
+                else if(sig.id_status === 2 || sig.nom_status === 'EN_COURS') statusStyle = 'background:#dbeafe; color:#1e40af';
+
+                card.innerHTML = `
+                    <button class="flag-btn" onclick="toggleUrgent(event, ${sig.id_signalements})">
+                        ${isUrgent ? 'rouge' : 'blanc'}
+                    </button>
+                    <h4>Dossier #${sig.id_signalements} - ${sig.code_suivi || 'SIG-TEMP'}</h4>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin:0.25rem 0;">Quartier : ${sig.quartier || 'Inconnu'}</p>
+                    <p style="font-size:0.9rem; text-overflow: ellipsis; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                        ${sig.description}
+                    </p>
+                    <span class="badge" style="${statusStyle}">${sig.nom_status || 'SOUMIS'}</span>
+                    <span class="badge" style="background:#e2e8f0; color:var(--primary);">${sig.niveau_priorite || 'MOYEN'}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectDossier(sig) {
+            selectedSignalement = sig;
+            document.getElementById('visualizer-placeholder').style.display = 'none';
+            const content = document.getElementById('visualizer-content');
+            content.style.display = 'block';
+
+            document.getElementById('v-id').textContent = sig.id_signalements;
+            document.getElementById('v-code').textContent = sig.code_suivi || `SIG-${sig.id_signalements}`;
+            document.getElementById('v-quartier').textContent = sig.quartier || 'Non renseigné';
+            document.getElementById('v-priorite').textContent = sig.niveau_priorite;
+            document.getElementById('v-desc').textContent = sig.description;
+            document.getElementById('v-select-status').value = sig.id_status || 1;
+        }
+
+        
+        function toggleUrgent(event, id) {
+            event.stopPropagation(); 
+            if (urgentFlags.includes(id)) {
+                urgentFlags = urgentFlags.filter(fId => fId !== id);
+            } else {
+                urgentFlags.push(id);
+            }
+            localStorage.setItem('urgent_flags', JSON.stringify(urgentFlags));
+            renderList(allSignalements);
+        }
+
+        
+        document.getElementById('btn-search').addEventListener('click', executeSearch);
+        document.getElementById('search-input').addEventListener('keyup', (e) => {
+            if(e.key === 'Enter') executeSearch();
+        });
+
+        function executeSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            if(!query) {
+                renderList(allSignalements);
+                return;
+            }
+            
+            const filtered = allSignalements.filter(sig => 
+                sig.description.toLowerCase().includes(query) || 
+                (sig.quartier && sig.quartier.toLowerCase().includes(query))
+            );
+            renderList(filtered);
+        }
+
+        
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'connexion.html';
+        });
+
+        
+        fetchSignalements();
+    </script>
+</body>
+</html>

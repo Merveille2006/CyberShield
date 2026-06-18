@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Brigade - CyberShield</title>
+  <link rel="stylesheet" href="Cyber.css" />
+</head>
+<body class="page-interne">
+
+  <header id="en-tete">
+    <div class="contenu-en-tete">
+      <div class="texte-enqueteur">Espace Enquêteur Connecté</div>
+      <nav id="navigation-principale">
+        <a href="index.html" class="btn-secondaire">Déconnexion</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="conteneur-principal">
+    <section id="section-brigade">
+      <div class="barre-dashboard">
+        <input type="text" id="champ-recherche-dossier" placeholder="🔍 Rechercher un indice ou dossier..." class="champ-recherche">
+      </div>
+
+      <div class="grille-dashboard">
+        <div class="colonne-dashboard">
+          <h3 class="titre-colonne urgent">🔥 Dossiers Urgents</h3>
+          <div id="liste-urgents" class="grille-dossiers"></div>
+        </div>
+
+        <div class="colonne-dashboard">
+          <h3 class="titre-colonne normal">📋 Flux Global</h3>
+          <div id="liste-globale" class="grille-dossiers"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="Cyber.js"></script>
+</body>
+</html>
