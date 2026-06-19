@@ -74,31 +74,41 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+    const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
 
-                const result = await response.json();
+    
+    if (!response.ok) {
+        
+        const texteErreur = await response.text();
+        console.error("Détails de l'erreur serveur :", texteErreur);
+        
+        errorDiv.textContent = `Erreur serveur (${response.status}) : Route introuvable ou problème technique.`;
+        errorDiv.style.display = 'block';
+        return; 
+    }
 
-                if (result.success) {
-                    
-                    localStorage.setItem('token_cybershield', result.token);
-                    localStorage.setItem('user_name', result.enqueteur.nom);
-                    localStorage.setItem('user_role', result.enqueteur.role);
-                    
-                    
-                    window.location.href = 'dashboard.html';
-                } else {
-                    errorDiv.textContent = `${result.message || 'Identifiants incorrects'}`;
-                    errorDiv.style.display = 'block';
-                }
-            } catch (error) {
-                console.error(error);
-                errorDiv.textContent = "Impossible de joindre l'authentificateur local (Port 4000).";
-                errorDiv.style.display = 'block';
-            }
+    
+    const result = await response.json();
+
+    if (result.success) {
+        localStorage.setItem('token_cybershield', result.token);
+        localStorage.setItem('user_name', result.enqueteur.nom);
+        localStorage.setItem('user_role', result.enqueteur.role);
+        
+        window.location.href = 'dashboard.html';
+    } else {
+        errorDiv.textContent = `${result.message || 'Identifiants incorrects'}`;
+        errorDiv.style.display = 'block';
+    }
+} catch (error) {
+    console.error(error);
+    errorDiv.textContent = "Impossible de se connecter au serveur CyberShield. Vérifiez votre connexion Internet.";
+    errorDiv.style.display = 'block';
+}
         });
     </script>
 </body>
