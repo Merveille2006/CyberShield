@@ -7,6 +7,15 @@ const routes = require('./src/routes/index');
 
 const app = express();
 
+const cors = require('cors');
+
+const corsOptions = {
+  origin: 'https://cybershield-h04h.onrender.com',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
 app.use(cors());
 app.use(express.json());
 

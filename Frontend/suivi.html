@@ -43,7 +43,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:4000/api';
+        const API_URL = 'https://cybershield-h04h.onrender.com';
 
         
         const urlParams = new URLSearchParams(window.location.search);
@@ -62,7 +62,7 @@
     const token = localStorage.getItem('token'); 
 
     try {
-        const response = await fetch('http://localhost:4000/api/signalements', {
+        const response = await fetch('https://cybershield-h04h.onrender.com/api/signalements', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +86,7 @@
         const signalements = Array.isArray(result) ? result : (result.data || []);
 
         
-        const valeurRecherche = document.getElementById('search-input').value; 
+        const valeurRecherche = document.getElementById('input-code').value; 
         const signalementTrouve = signalements.find(s => s.code_suivi === valeurRecherche || s.id === valeurRecherche);
         
         
