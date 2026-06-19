@@ -71,9 +71,10 @@ const getProfil = async (req, res) => {
       [req.enqueteur.id]
     );
     res.json({ success: true, data: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Erreur serveur' });
-  }
+  } catch (error) {
+    console.error("ERREUR DANS GETPROFIL :", error);
+    return res.status(500).json({ success: false, message: "Erreur serveur" });
+}
 };
 
     
