@@ -7,21 +7,16 @@ const routes = require('./src/routes/index');
 
 const app = express();
 
-const cors = require('cors');
 
 const corsOptions = {
-  origin: 'https://cybershield-h04h.onrender.com',
+  origin: 'https://merveille2006.github.io', 
   optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions));
-
-app.use(cors());
+app.use(cors(corsOptions)); 
 app.use(express.json());
 
-
 app.use('/api', routes);
-
 
 app.get('/', (req, res) => {
   res.json({ message: 'CyberShield API — opérationnelle' });
@@ -29,5 +24,5 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(` Serveur CyberShield démarré sur http://localhost:${PORT}`);
+  console.log(`Serveur CyberShield démarré sur le port ${PORT}`);
 });
