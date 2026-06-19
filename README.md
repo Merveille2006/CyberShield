@@ -82,6 +82,8 @@ CyberShield est une plateforme web de gestion et de suivi des infractions numér
 
  Déploiement
 * Mise en production de la plateforme.
+* Mise en ligne du backend et de la base de donnée sur Render
+* Mise en ligne du frontend sur Github Pages
 
  Améliorations futures
 * Notifications SMS automatiques de changement de statut.
@@ -97,6 +99,7 @@ CyberShield est une plateforme web de gestion et de suivi des infractions numér
  Frontend
 * HTML5
 * CSS3
+* JS
 
  Backend
 * Node.js
