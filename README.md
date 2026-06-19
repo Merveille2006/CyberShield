@@ -91,6 +91,7 @@ CyberShield est une plateforme web de gestion et de suivi des infractions numér
 * Export PDF certifié des dossiers d'infraction.
 * Gestion multi-communes et inter-brigades.
 * Historique complet des modifications de dossiers.
+* Correction de l'erreur au niveau de la connexion.
 
 
 
